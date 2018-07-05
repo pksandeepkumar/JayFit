@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="slide_height">300dp</dimen>
+    <dimen name="sub_video_height">320dp</dimen>
+
+    <!-- Dimen for Welcome activity -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+</resources>

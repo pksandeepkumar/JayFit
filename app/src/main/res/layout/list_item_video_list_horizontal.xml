@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/horizontal_list_item_width"
+    android:layout_height="@dimen/horizontal_list_height"
+    android:padding="3dp">
+
+    <ImageView
+        android:id="@+id/imVid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/tvCatTitle"
+        />
+
+    <TextView
+        android:id="@+id/tvCatTitle"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:text="Sub Category 1"/>
+
+    <ImageView
+        android:layout_margin="5dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/play_button"
+        android:layout_above="@+id/tvCatTitle"/>
+
+</RelativeLayout>
