@@ -42,6 +42,12 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
 
     private ArrayList<SliderData> mValues;
 
+    public MembershipDialog.OnDialogClose onDialogClose;
+
+    public void setOnDialogClose(MembershipDialog.OnDialogClose onDialogClose) {
+        this.onDialogClose =onDialogClose;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ImageView imVid;
@@ -135,6 +141,12 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
     }
 
     public void openPDF() {
+
+//        boolean test = false;
+//        if(!test) {
+//            SubVideoListActivity.chekout();
+//            return;
+//        }
         File fileBrochure = new File(Environment.getExternalStorageDirectory() + File.separator + "demo.pdf");
         if (!fileBrochure.exists()) {
             CopyAssetsbrochure();
@@ -195,8 +207,14 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
         }
     }
 
+
+
     public  void showDialog() {
         MembershipDialog dialog = new MembershipDialog(mContext);
+        if(onDialogClose != null) {
+            dialog.setOnDialogClose(onDialogClose);
+        }
+
 //        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, yourHeight);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();

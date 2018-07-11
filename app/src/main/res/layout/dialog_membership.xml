@@ -59,6 +59,7 @@
             android:textSize="@dimen/text_size_small"
             android:textStyle="bold"
             android:clickable="true"
+
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/bg_rounded_xml"
@@ -75,6 +76,7 @@
             android:textSize="@dimen/text_size_small"
             android:textStyle="bold"
             android:clickable="true"
+
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/bg_rounded_xml"
@@ -91,6 +93,7 @@
             android:textSize="@dimen/text_size_small"
             android:textStyle="bold"
             android:clickable="true"
+
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/bg_rounded_xml"

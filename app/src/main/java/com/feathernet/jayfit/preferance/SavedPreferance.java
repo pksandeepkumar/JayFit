@@ -11,7 +11,8 @@ import android.content.SharedPreferences.Editor;
  *
  */
 public class SavedPreferance {
-	
+
+	public static final String CHECK_IN = "CHECK_IN";
 	public static final String GOOGLE_LOGINED = "GOOGLE_LOGINED";
 	public static final String INTRO_SKIPPED = "INTRO_SKIPPED";
 	public static final String LOGIN_SKIPPED = "LOGIN_SKIPPED";
