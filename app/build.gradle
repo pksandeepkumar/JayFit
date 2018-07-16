@@ -33,4 +33,5 @@ dependencies {
     //    implementation 'com.braintreepayments.api:drop-in:3.+'
 //    implementation 'com.braintreepayments.api:drop-in:3.4.0'
     implementation 'com.braintreepayments.api:drop-in:3.4.0'
+implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 }
