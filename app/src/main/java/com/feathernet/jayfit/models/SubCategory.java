@@ -11,7 +11,6 @@ import com.feathernet.jayfit.rest.VincityAPI;
 import com.feathernet.jayfit.rest.pojos.category.CategoryPOJO;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 
@@ -19,41 +18,47 @@ import retrofit2.Call;
  *
  */
 
-public class Category extends BaseDataModel {
+public class SubCategory extends BaseDataModel {
 
-    public static final String TABLE_NAME = "TableCategory";
+    public static final String TABLE_NAME = "TableSubCategory";
 
 
     public static final String CATEGORY_ID = "CategoryID";
+    public static final String SUB_CATEGORY_ID = "SubcategoryID";
     public static final String NAME = "Name";
+    public static final String IMAGE = "Image";
     public static final String STATUS = "Status";
 
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE  " + TABLE_NAME
             + " ( " + ID + " INTEGER  PRIMARY KEY AUTOINCREMENT, "
             + CATEGORY_ID + " VARCHAR(5) , "
+            + SUB_CATEGORY_ID + " VARCHAR(5) , "
             + NAME + " VARCHAR(250) , "
+            + IMAGE + " TEXT , "
             + STATUS + " VARCHAR(5) )";
 
 
     public String categoryID;
+    public String subcategoryID;
     public String name;
+    public String image;
     public String status;
 
-    public ArrayList<SubCategory> subCategories;
-
-    public Category() {
+    public SubCategory() {
     }
 
-    public Category( String id, String name, String status ) {
-        this.categoryID = id;
+    public SubCategory(String categoryID, String id, String name, String image, String status ) {
+        this.categoryID = categoryID;
+        this.subcategoryID = id;
         this.name = name;
+        this.image = image;
         this.status = status;
     }
 
 
-    public static ArrayList<Category> getAllCategories(Context context) {
+    public static ArrayList<SubCategory> getAllCategories(Context context) {
         DatabasesHelper helper = new DatabasesHelper( context);
-        ArrayList<Category> areas = getAllObjects(helper);
+        ArrayList<SubCategory> areas = getAllObjects(helper);
         helper.close();
         return areas;
     }
@@ -61,21 +66,23 @@ public class Category extends BaseDataModel {
 
     //DB Methods>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    public static void insertObject(DatabasesHelper db, Category object) {
+    public static void insertObject(DatabasesHelper db, SubCategory object) {
         if( object == null) return;
         SQLiteDatabase sqld = db.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(CATEGORY_ID, object.categoryID);
+        cv.put(SUB_CATEGORY_ID, object.subcategoryID);
         cv.put(NAME, object.name);
+        cv.put(IMAGE, object.image);
         cv.put(STATUS, object.status);
         long result = sqld.insert(TABLE_NAME, null,cv);
         object.id = result;
         sqld.close();
     }
 
-    public static void insertOrUpdateWrtObjectID(DatabasesHelper db, Category object) {
+    public static void insertOrUpdateWrtObjectID(DatabasesHelper db, SubCategory object) {
         if( object == null) return;
-        Category temp = getAnObjectWithObjectID(db,object.categoryID);
+        SubCategory temp = getAnObjectWithObjectID(db,object.subcategoryID);
         if( temp == null ) {
             insertObject(db, object);
         } else {
@@ -83,32 +90,36 @@ public class Category extends BaseDataModel {
         }
     }
 
-    public static void updateObjectWithObjectID(DatabasesHelper db, Category object) {
+    public static void updateObjectWithObjectID(DatabasesHelper db, SubCategory object) {
         if( object == null) return;
         SQLiteDatabase sqld = db.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(CATEGORY_ID, object.categoryID);
+        cv.put(SUB_CATEGORY_ID, object.subcategoryID);
         cv.put(NAME, object.name);
+        cv.put(IMAGE, object.image);
         cv.put(STATUS, object.status);
-        sqld.update(TABLE_NAME, cv, CATEGORY_ID + "='" +object.categoryID + "'", null);
+        sqld.update(TABLE_NAME, cv, SUB_CATEGORY_ID + "='" +object.subcategoryID + "'", null);
         sqld.close();
     }
 
-    public static void insertObjects(DatabasesHelper db, ArrayList<Category> objects) {
+    public static void insertObjects(DatabasesHelper db, ArrayList<SubCategory> objects) {
         if( objects == null) return;
-        for( Category object : objects) {
+        for( SubCategory object : objects) {
             if( null == object ) continue;
             insertObject(db, object);
         }
     }
 
-    public static Category getAnObjectFromCursor(Cursor c ) {
-        Category instance = null;
+    public static SubCategory getAnObjectFromCursor(Cursor c ) {
+        SubCategory instance = null;
         if( c != null) {
-            instance = new Category();
+            instance = new SubCategory();
             instance.id = c.getInt(c.getColumnIndex(ID));
             instance.categoryID = c.getString(c.getColumnIndex(CATEGORY_ID));
+            instance.subcategoryID = c.getString(c.getColumnIndex(SUB_CATEGORY_ID));
             instance.name = c.getString(c.getColumnIndex(NAME));
+            instance.image = c.getString(c.getColumnIndex(IMAGE));
             instance.status = c.getString(c.getColumnIndex(STATUS));
 
         } else {
@@ -116,8 +127,8 @@ public class Category extends BaseDataModel {
         return instance;
     }
 
-    public static ArrayList<Category> getAllObjects(DatabasesHelper db) {
-        ArrayList<Category> objects = new ArrayList<Category>();
+    public static ArrayList<SubCategory> getAllObjects(DatabasesHelper db) {
+        ArrayList<SubCategory> objects = new ArrayList<SubCategory>();
         SQLiteDatabase dbRead = db.getReadableDatabase();
         String query = "select * from " + TABLE_NAME ;
         Cursor c = dbRead.rawQuery(query, null);
@@ -131,11 +142,11 @@ public class Category extends BaseDataModel {
         return objects;
     }
 
-    public static Category getAnObjectWithObjectID(DatabasesHelper db, String objectID) {
-        Category object = null;
+    public static SubCategory getAnObjectWithObjectID(DatabasesHelper db, String objectID) {
+        SubCategory object = null;
         SQLiteDatabase dbRead = db.getReadableDatabase();
         String query = "select * from " + TABLE_NAME + " WHERE "
-                + CATEGORY_ID + " = '" + objectID + "'";
+                + SUB_CATEGORY_ID + " = '" + objectID + "'";
         Cursor c = dbRead.rawQuery(query, null);
         if (c.moveToFirst()) {
             do {

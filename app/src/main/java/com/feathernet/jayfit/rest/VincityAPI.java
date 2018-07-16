@@ -4,6 +4,7 @@ import com.feathernet.jayfit.rest.pojos.register.RegistrationPOJO;
 import com.feathernet.jayfit.rest.pojos.category.CategoryPOJO;
 import com.feathernet.jayfit.rest.pojos.subcategory.SubCategoryPOJO;
 import com.feathernet.jayfit.rest.pojos.video.VideoPOJO;
+import com.feathernet.jayfit.rest.pojos.videosall.GetAllVideosPOJO;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -23,4 +24,7 @@ public interface VincityAPI {
 
     @POST("video")
     public Call<VideoPOJO> video();
+
+    @POST("allvideo")
+    public Call<GetAllVideosPOJO> getAllVideos();
 }

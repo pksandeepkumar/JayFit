@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.feathernet.jayfit.R;
 import com.feathernet.jayfit.SubVideoListActivity;
 import com.feathernet.jayfit.models.SliderData;
+import com.feathernet.jayfit.models.SubCategory;
+import com.feathernet.jayfit.models.Videos;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,8 +30,8 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
 
 
     Context mContext;
+    ArrayList<SubCategory> subCategoryList;
 
-    private ArrayList<SliderData> mValues;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -50,41 +52,29 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     }
 
 
-
-    public VideoListAdapter(Context context) {
-//        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
-//        mBackground = mTypedValue.resourceId;
+    public VideoListAdapter(Context context, ArrayList<SubCategory> subCategoryList) {
         mContext = context;
-        mValues = SliderData.getSamples();
-        Collections.shuffle(mValues);
+        this.subCategoryList = subCategoryList;
     }
 
-    public VideoListAdapter(Context context, ArrayList<SliderData> dataList) {
-//        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
-//        mBackground = mTypedValue.resourceId;
-        mContext = context;
-        mValues = dataList;
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_video_list_horizontal, parent, false);
-        //view.setBackgroundResource(mBackground);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final SliderData product = mValues.get(position);
+        final SubCategory subCategory = subCategoryList.get(position);
 
-        holder.tvCatTitle.setText("Sub Category" + (position+1));
+        holder.tvCatTitle.setText(subCategory.name);
 
         holder.imVid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("VideoListAdapter","Calling SubVideoListActivity intent");
                 Intent intent = new Intent(mContext, SubVideoListActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
