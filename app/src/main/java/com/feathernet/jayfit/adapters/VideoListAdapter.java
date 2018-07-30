@@ -81,7 +81,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
             }
         });
 
-        Glide.with(mContext).load(product.resourseImage)
+        Glide.with(mContext).load(subCategory.image)
 //                .thumbnail(0.5f)
 //                .crossFade()
 //                .centerCrop()
@@ -93,6 +93,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if(this.subCategoryList == null) return 0;
+        return this.subCategoryList.size();
     }
 }

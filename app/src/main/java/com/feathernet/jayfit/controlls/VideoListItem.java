@@ -61,7 +61,7 @@ public class VideoListItem extends RelativeLayout {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList);
         recyclerView.addItemDecoration(new DividerItemDecoration(context,
                 LinearLayoutManager.HORIZONTAL));
-        VideoListAdapter adapter = new VideoListAdapter(context);
+        VideoListAdapter adapter = new VideoListAdapter(context, this.category.subCategories);
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context,
                 LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);

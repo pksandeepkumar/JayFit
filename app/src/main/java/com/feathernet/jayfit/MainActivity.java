@@ -48,6 +48,7 @@ public class MainActivity extends BaseActivity
 
     NavigationView navigationView;
     Context mContext;
+    LinearLayout llVideoHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +59,9 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         loadSliders();
-        loadVidHorizontalList();
-        loadVidHorizontalList2();
-        loadVidHorizontalList3();
+//        loadVidHorizontalList();
+//        loadVidHorizontalList2();
+//        loadVidHorizontalList3();
         isWriteStoragePermissionGranted();
 
 
@@ -148,35 +149,41 @@ public class MainActivity extends BaseActivity
 
     }
 
-    public void loadVidHorizontalList() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList);
-        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.HORIZONTAL));
-        VideoListAdapter adapter = new VideoListAdapter(getApplicationContext());
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-        recyclerView.setAdapter(adapter);
+    public void loadVideos() {
+        llVideoHolder = (LinearLayout) this.findViewById(R.id.llVideoHolder);
+
 
     }
 
-    public void loadVidHorizontalList2() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList2);
-        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.HORIZONTAL));
-        VideoListAdapter adapter = new VideoListAdapter(getApplicationContext());
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-        recyclerView.setAdapter(adapter);
+//    public void loadVidHorizontalList() {
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList);
+//        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.HORIZONTAL));
+//        VideoListAdapter adapter = new VideoListAdapter(getApplicationContext());
+//        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(horizontalLayoutManager);
+//        recyclerView.setAdapter(adapter);
+//
+//    }
 
-    }
+//    public void loadVidHorizontalList2() {
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList2);
+//        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.HORIZONTAL));
+//        VideoListAdapter adapter = new VideoListAdapter(getApplicationContext());
+//        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(horizontalLayoutManager);
+//        recyclerView.setAdapter(adapter);
+//
+//    }
 
-    public void loadVidHorizontalList3() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList3);
-        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.HORIZONTAL));
-        VideoListAdapter adapter = new VideoListAdapter(getApplicationContext());
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(horizontalLayoutManager);
-        recyclerView.setAdapter(adapter);
-
-    }
+//    public void loadVidHorizontalList3() {
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.idRecyclerViewHorizontalList3);
+//        recyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.HORIZONTAL));
+//        VideoListAdapter adapter = new VideoListAdapter(getApplicationContext());
+//        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(horizontalLayoutManager);
+//        recyclerView.setAdapter(adapter);
+//
+//    }
 
     @Override
     public void onBackPressed() {
