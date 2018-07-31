@@ -28,12 +28,24 @@ import com.feathernet.jayfit.adapters.SlideAdapter;
 import com.feathernet.jayfit.adapters.VideoListAdapter;
 import com.feathernet.jayfit.controlls.HeadderControll;
 import com.feathernet.jayfit.controlls.HeadderControllLogin;
+import com.feathernet.jayfit.controlls.VideoListItem;
+import com.feathernet.jayfit.database.DatabasesHelper;
+import com.feathernet.jayfit.models.Category;
+import com.feathernet.jayfit.models.SubCategory;
+import com.feathernet.jayfit.models.Videos;
 import com.feathernet.jayfit.preferance.SavedPreferance;
+import com.feathernet.jayfit.rest.pojos.videosall.GetAllVideosPOJO;
+import com.feathernet.jayfit.rest.pojos.videosall.Video;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import me.relex.circleindicator.CircleIndicator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -74,6 +86,8 @@ public class MainActivity extends BaseActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         loadUser();
+
+        loadAllVideos();
     }
 
     public void loadUser() {
@@ -149,8 +163,54 @@ public class MainActivity extends BaseActivity
 
     }
 
-    public void loadVideos() {
+    public void loadAllVideos() {
+        com.feathernet.jayfit.models.Category category = new com.feathernet.jayfit.models.Category();
+        Call<GetAllVideosPOJO> call = category.getAllVideos();
+        call.enqueue(new Callback<GetAllVideosPOJO>() {
+            @Override
+            public void onResponse(Call<GetAllVideosPOJO> call,
+                                   Response<GetAllVideosPOJO> response) {
+
+
+                DatabasesHelper dbHelper = new DatabasesHelper(mContext);
+                Category.insertFromPOJO(dbHelper, response.body());
+                dbHelper.close();
+                populateVideos();
+            }
+            @Override
+            public void onFailure(Call<GetAllVideosPOJO> call, Throwable t) {
+
+//                thisMethodEnds();
+            }
+
+        });
+    }
+
+    public void populateVideos() {
         llVideoHolder = (LinearLayout) this.findViewById(R.id.llVideoHolder);
+        DatabasesHelper helper = new DatabasesHelper(mContext);
+        ArrayList<Category> categories = Category.getAllObjects(helper);
+        if(categories != null) {
+            for( Category category: categories) {
+                ArrayList<SubCategory> subCategories = SubCategory.getAllObjectsUnderCategory(helper, category.categoryID);
+                category.subCategories = subCategories;
+                if( subCategories != null) {
+                    for( SubCategory subCategory : subCategories) {
+                        ArrayList<Videos> videosList = Videos.getAllVideosUnderSubCategory(helper, subCategory.subcategoryID);
+                        subCategory.videos = videosList;
+                    }
+                }
+            }
+        }
+        helper.close();
+
+
+        if(categories != null) {
+            for( Category category: categories) {
+                VideoListItem videoListItem = new VideoListItem(mContext, category);
+                llVideoHolder.addView(videoListItem);
+            }
+        }
 
 
     }

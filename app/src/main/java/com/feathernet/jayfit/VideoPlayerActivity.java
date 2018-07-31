@@ -4,9 +4,14 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.feathernet.jayfit.database.DatabasesHelper;
 import com.feathernet.jayfit.models.SliderData;
+import com.feathernet.jayfit.models.Videos;
+
+import java.util.ArrayList;
 
 public class VideoPlayerActivity extends BaseActivity {
 
@@ -17,32 +22,46 @@ public class VideoPlayerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        VideoURL = SliderData.videoURL;
 
-        videoview = (VideoView) findViewById(R.id.VideoView);
-        try {
-            // Start the MediaController
-            MediaController mediacontroller = new MediaController(
-                    this);
-            mediacontroller.setAnchorView(videoview);
-            // Get the URL from String VideoURL
-            Uri video = Uri.parse(VideoURL);
-            videoview.setMediaController(mediacontroller);
-            videoview.setVideoURI(video);
 
-        } catch (Exception e) {
+        Bundle bundle = getIntent().getExtras();
+
+        String videoUrl = bundle.getString(AppConst.VIDEO_URL);
+        if(videoUrl != null) {
+            VideoURL = videoUrl;
+
+            videoview = (VideoView) findViewById(R.id.VideoView);
+            try {
+                // Start the MediaController
+                MediaController mediacontroller = new MediaController(
+                        this);
+                mediacontroller.setAnchorView(videoview);
+                // Get the URL from String VideoURL
+                Uri video = Uri.parse(VideoURL);
+                videoview.setMediaController(mediacontroller);
+                videoview.setVideoURI(video);
+
+            } catch (Exception e) {
 //            Log.e("Error", e.getMessage());
-            e.printStackTrace();
+                e.printStackTrace();
+            }
+
+            videoview.requestFocus();
+            videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                // Close the progress bar and play the video
+                public void onPrepared(MediaPlayer mp) {
+
+                    videoview.start();
+                }
+            });
+        } else {
+            Toast.makeText(this,"Something went wrong, Please try later", Toast.LENGTH_LONG).show();
         }
 
-        videoview.requestFocus();
-        videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            // Close the progress bar and play the video
-            public void onPrepared(MediaPlayer mp) {
 
-                videoview.start();
-            }
-        });
+
+
+
 
     }
 

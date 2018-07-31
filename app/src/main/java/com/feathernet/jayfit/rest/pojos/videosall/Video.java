@@ -42,6 +42,9 @@ public class Video {
     @SerializedName("filepath")
     @Expose
     private String filepath;
+    @SerializedName("imagepath")
+    @Expose
+    private String imagepath;
 
     public String getId() {
         return id;
@@ -137,6 +140,14 @@ public class Video {
 
     public void setFilepath(String filepath) {
         this.filepath = filepath;
+    }
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
     }
 
 }

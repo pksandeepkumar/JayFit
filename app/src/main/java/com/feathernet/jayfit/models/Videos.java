@@ -161,6 +161,18 @@ public class Videos extends BaseDataModel {
         return areas;
     }
 
+    public static Videos loadFromPOJO(com.feathernet.jayfit.rest.pojos.videosall.Video obj) {
+        if(obj == null) return null;
+        Videos videos = new Videos();
+        videos.subcategoryID = obj.getSubcategory();
+        videos.categoryID = obj.getCategory();
+        videos.name = obj.getName();
+        videos.imagePath = obj.getImagepath();
+        videos.video = obj.getVideo();
+        videos.pdfBrochure = obj.getFilepath();
+        return videos;
+    }
+
 
 
     //DB Methods>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -187,7 +199,7 @@ public class Videos extends BaseDataModel {
 
     public static void insertOrUpdateWrtObjectID(DatabasesHelper db, Videos object) {
         if( object == null) return;
-        Videos temp = getAnObjectWithObjectID(db, object.getSubcategoryID());
+        Videos temp = getAnObjectWithObjectID(db, object.videoID);
         if( temp == null ) {
             insertObject(db, object);
         } else {
@@ -244,6 +256,23 @@ public class Videos extends BaseDataModel {
         ArrayList<Videos> objects = new ArrayList<Videos>();
         SQLiteDatabase dbRead = db.getReadableDatabase();
         String query = "select * from " + TABLE_NAME ;
+        Cursor c = dbRead.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            do {
+                objects.add(getAnObjectFromCursor(c));
+            } while ( c.moveToNext()) ;
+        }
+        c.close();
+        dbRead.close();
+        return objects;
+    }
+
+    public static ArrayList<Videos> getAllVideosUnderSubCategory(DatabasesHelper db, String subcategoryID) {
+        ArrayList<Videos> objects = new ArrayList<Videos>();
+        SQLiteDatabase dbRead = db.getReadableDatabase();
+        String query = "select * from " + TABLE_NAME  + " WHERE  "
+                + SUB_CATEGORY_ID + " ='" + subcategoryID + "'";
+
         Cursor c = dbRead.rawQuery(query, null);
         if (c.moveToFirst()) {
             do {

@@ -13,8 +13,12 @@ import android.widget.Toast;
 
 import com.braintreepayments.api.dropin.DropInRequest;
 import com.feathernet.jayfit.adapters.SubVideoListAdapter;
+import com.feathernet.jayfit.database.DatabasesHelper;
 import com.feathernet.jayfit.dialog.MembershipDialog;
+import com.feathernet.jayfit.models.Videos;
 import com.feathernet.jayfit.preferance.SavedPreferance;
+
+import java.util.ArrayList;
 
 /**
  * Created by sandeep on 06/04/18.
@@ -32,7 +36,18 @@ public class SubVideoListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_sub_video_list);
-        loadVideoList();
+
+        Bundle bundle = getIntent().getExtras();
+
+        String subCategoryId = bundle.getString(AppConst.SUBCATEGORY_ID);
+        if(subCategoryId != null) {
+            DatabasesHelper helper = new DatabasesHelper(mContext);
+            ArrayList<Videos> videosList = Videos.getAllVideosUnderSubCategory(helper, subCategoryId);
+            helper.close();
+            loadVideoList(videosList);
+        }
+
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -53,11 +68,12 @@ public class SubVideoListActivity extends BaseActivity {
     }
 
 
-    public void loadVideoList() {
+    public void loadVideoList(ArrayList<Videos> videosList) {
+        if(videosList == null) return ;
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rcVideoList);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,
                 LinearLayoutManager.VERTICAL));
-        SubVideoListAdapter adapter = new SubVideoListAdapter(this);
+        SubVideoListAdapter adapter = new SubVideoListAdapter(this, videosList);
         adapter.setOnDialogClose(new MembershipDialog.OnDialogClose() {
             @Override
             public void OnDialogClose() {

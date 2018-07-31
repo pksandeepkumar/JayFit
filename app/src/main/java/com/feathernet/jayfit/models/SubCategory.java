@@ -43,6 +43,7 @@ public class SubCategory extends BaseDataModel {
     public String name;
     public String image;
     public String status;
+    public ArrayList<Videos> videos;
 
     public SubCategory() {
     }
@@ -61,6 +62,16 @@ public class SubCategory extends BaseDataModel {
         ArrayList<SubCategory> areas = getAllObjects(helper);
         helper.close();
         return areas;
+    }
+
+    public static SubCategory loadFromPOJO(com.feathernet.jayfit.rest.pojos.videosall.SubCategory obj) {
+        if(obj == null) return null;
+        SubCategory subCategory = new SubCategory();
+        subCategory.subcategoryID = obj.getId();
+        subCategory.categoryID = obj.getCategory();
+        subCategory.name = obj.getSubcategory();
+        subCategory.image = obj.getImagepath();
+        return subCategory;
     }
 
 
@@ -131,6 +142,22 @@ public class SubCategory extends BaseDataModel {
         ArrayList<SubCategory> objects = new ArrayList<SubCategory>();
         SQLiteDatabase dbRead = db.getReadableDatabase();
         String query = "select * from " + TABLE_NAME ;
+        Cursor c = dbRead.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            do {
+                objects.add(getAnObjectFromCursor(c));
+            } while ( c.moveToNext()) ;
+        }
+        c.close();
+        dbRead.close();
+        return objects;
+    }
+
+    public static ArrayList<SubCategory> getAllObjectsUnderCategory(DatabasesHelper db, String categoryId) {
+        ArrayList<SubCategory> objects = new ArrayList<SubCategory>();
+        SQLiteDatabase dbRead = db.getReadableDatabase();
+        String query = "select * from " + TABLE_NAME + " WHERE "
+                + CATEGORY_ID + " ='" + categoryId + "'";
         Cursor c = dbRead.rawQuery(query, null);
         if (c.moveToFirst()) {
             do {

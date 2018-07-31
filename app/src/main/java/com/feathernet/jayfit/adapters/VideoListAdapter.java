@@ -6,6 +6,7 @@ package com.feathernet.jayfit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.feathernet.jayfit.AppConst;
 import com.feathernet.jayfit.R;
 import com.feathernet.jayfit.SubVideoListActivity;
 import com.feathernet.jayfit.models.SliderData;
@@ -76,6 +78,9 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SubVideoListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(AppConst.SUBCATEGORY_ID, subCategory.subcategoryID);
+                intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

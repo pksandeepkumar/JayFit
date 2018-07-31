@@ -4,11 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.feathernet.jayfit.App;
+import com.feathernet.jayfit.AppUtility;
 import com.feathernet.jayfit.database.DatabasesHelper;
 import com.feathernet.jayfit.rest.ServiceGenerator;
 import com.feathernet.jayfit.rest.VincityAPI;
 import com.feathernet.jayfit.rest.pojos.category.CategoryPOJO;
+import com.feathernet.jayfit.rest.pojos.videosall.GetAllVideosPOJO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +175,54 @@ public class Category extends BaseDataModel {
         }
     }
 
+    public static Category loadFromPOJO(com.feathernet.jayfit.rest.pojos.videosall.Category obj) {
+        if(obj == null) return null;
+        Category category = new Category();
+        category.categoryID = obj.getId();
+        category.status = obj.getStatus();
+        category.name = obj.getCategory();
+
+        return category;
+    }
+
+
+
+
+    public static void  insertFromPOJO(DatabasesHelper db, GetAllVideosPOJO object) {
+
+        if(object == null) return;
+
+        if(object.getCategory() != null)  {
+            for(com.feathernet.jayfit.rest.pojos.videosall.Category cat: object.getCategory()) {
+                if( cat == null) continue;
+                Category category = loadFromPOJO(cat);
+                Category.insertOrUpdateWrtObjectID(db, category);
+            }
+            Log.e("XXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            Log.e("XXXXXX","Category Count:" + object.getCategory().size());
+        }
+
+        if(object.getSubCategory() != null) {
+            for(com.feathernet.jayfit.rest.pojos.videosall.SubCategory sub: object.getSubCategory()) {
+                if( sub == null) continue;
+                SubCategory subCategory = SubCategory.loadFromPOJO(sub);
+                SubCategory.insertOrUpdateWrtObjectID(db, subCategory);
+            }
+            Log.e("XXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            Log.e("XXXXXX","Subcategory Count:" + object.getSubCategory().size());
+        }
+
+        if(object.getVideo() != null) {
+            for(com.feathernet.jayfit.rest.pojos.videosall.Video vid : object.getVideo()) {
+                if( vid == null) continue;
+                Videos videos = Videos.loadFromPOJO(vid);
+                Videos.insertOrUpdateWrtObjectID(db, videos);
+            }
+            Log.e("XXXXXX","XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            Log.e("XXXXXX","Videos Count:" + object.getVideo().size());
+        }
+    }
+
     //API Calls>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     public Call<CategoryPOJO> getCategory() {
@@ -178,6 +230,15 @@ public class Category extends BaseDataModel {
         Call<CategoryPOJO> call = serviceApi.category();
         return call;
     }
+
+
+    public Call<GetAllVideosPOJO> getAllVideos() {
+        VincityAPI serviceApi =  ServiceGenerator.createService(VincityAPI.class);
+        Call<GetAllVideosPOJO> call = serviceApi.getAllVideos();
+        return call;
+    }
+
+
 
 
 }

@@ -18,9 +18,9 @@ public class SubCategory {
     @SerializedName("image")
     @Expose
     private String image;
-    @SerializedName("status")
+    @SerializedName("imagepath")
     @Expose
-    private String status;
+    private String imagepath;
 
     public String getId() {
         return id;
@@ -54,12 +54,12 @@ public class SubCategory {
         this.image = image;
     }
 
-    public String getStatus() {
-        return status;
+    public String getImagepath() {
+        return imagepath;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
     }
 
 }

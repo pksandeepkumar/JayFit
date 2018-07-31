@@ -11,6 +11,7 @@ import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,10 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.feathernet.jayfit.AppConst;
 import com.feathernet.jayfit.R;
 import com.feathernet.jayfit.VideoPlayerActivity;
 import com.feathernet.jayfit.dialog.MembershipDialog;
 import com.feathernet.jayfit.models.SliderData;
+import com.feathernet.jayfit.models.Videos;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,7 +43,7 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
 
     Context mContext;
 
-    private ArrayList<SliderData> mValues;
+    private ArrayList<Videos> mValues;
 
     public MembershipDialog.OnDialogClose onDialogClose;
 
@@ -71,20 +74,13 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
     }
 
 
-    public SubVideoListAdapter(Context context) {
-//        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
-//        mBackground = mTypedValue.resourceId;
+    public SubVideoListAdapter(Context context, ArrayList<Videos> videos) {
         mContext = context;
-        mValues = SliderData.getVidSamples();
+        mValues = videos;
         Collections.shuffle(mValues);
     }
 
-    public SubVideoListAdapter(Context context, ArrayList<SliderData> dataList) {
-//        context.getTheme().resolveAttribute(R.attr.selectableItemBackground, mTypedValue, true);
-//        mBackground = mTypedValue.resourceId;
-        mContext = context;
-        mValues = dataList;
-    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -98,23 +94,28 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final SliderData product = mValues.get(position);
+        final Videos video = mValues.get(position);
 
-        if(!product.free) {
+        if(video.getType().equals(AppConst.TYPE_PAID)) {
             holder.tvFree.setVisibility(View.INVISIBLE);
         }
 
-        if(!product.hasAttachment) {
+        if( !(video.getPdfBrochure() != null && video.getPdfBrochure().trim().length() > 0) ) {
             holder.btnViewPdf.setVisibility(View.INVISIBLE);
         }
 
-        holder.tvCatTitle.setText(product.name);
+        holder.tvCatTitle.setText(video.getName());
         holder.imVid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(product.free) {
+                if(video.getType().equals(AppConst.TYPE_FREE)) {
                     Intent intent = new Intent(mContext, VideoPlayerActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(AppConst.VIDEO_ID, video.getCategoryID());
+                    bundle.putString(AppConst.VIDEO_URL, video.getVideo());
+                    intent.putExtras(bundle);
+
                     mContext.startActivity(intent);
                 } else {
                     showDialog();
@@ -130,7 +131,7 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
             }
         });
 
-        Glide.with(mContext).load(product.resourseImage)
+        Glide.with(mContext).load(video.getImagePath())
 //                .thumbnail(0.5f)
 //                .crossFade()
 //                .centerCrop()

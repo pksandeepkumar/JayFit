@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.feathernet.jayfit.models.Category;
+import com.feathernet.jayfit.models.SubCategory;
+import com.feathernet.jayfit.models.Videos;
 
 import java.util.ArrayList;
 
@@ -55,10 +57,14 @@ public class DatabasesHelper extends SQLiteOpenHelper {
 	private void loadQuery() {
 		query_create_tables = new ArrayList<String>();
 		query_create_tables.add(Category.CREATE_TABLE_QUERY);//1
+		query_create_tables.add(SubCategory.CREATE_TABLE_QUERY);//2
+		query_create_tables.add(Videos.CREATE_TABLE_QUERY);//3
 	}
 
 	private void loadTableNames() {
 		tables.add(Category.TABLE_NAME);//1
+		tables.add(SubCategory.TABLE_NAME);//2
+		tables.add(Videos.TABLE_NAME);//3
 	}
 
 	public static void clearDB(Context context) {
