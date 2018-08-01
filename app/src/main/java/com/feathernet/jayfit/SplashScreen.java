@@ -24,7 +24,7 @@ public class SplashScreen extends BaseActivity {
                     startActivity(WelcomeActivity.class);
                     finish();
                 } else if(SavedPreferance.getGoogleLogined(context)) {
-                    startActivity(MainActivity.class);
+                    startActivity(DashboardActivity.class);
                     finish();
                 } else {
                     startActivity(GoogleLoginActivity.class);

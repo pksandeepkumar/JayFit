@@ -27,6 +27,13 @@
             </intent-filter>
         </activity>
 
+
+
+        <activity android:name=".DashboardActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+
+
         <activity
             android:name=".GoogleLoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -46,6 +53,12 @@
 
         <activity android:name=".SubVideoListActivity"
             android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity android:name=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
 
         </activity>

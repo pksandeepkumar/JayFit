@@ -91,7 +91,7 @@ public class GoogleLoginActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void gotoDashboard(View view) {
-        startActivity(MainActivity.class);
+        startActivity(DashboardActivity.class);
         finish();
     }
 

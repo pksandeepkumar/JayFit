@@ -47,6 +47,7 @@ public class Videos extends BaseDataModel {
     public static final String STATUS = "Status";
     public static final String PDF_BROCHURE = "PdfBrochure";
     public static final String IMAGE_PATH = "ImagePath";
+    public static final String CURRENT_POSITION = "CurrentPosition";
 
     public static final String CREATE_TABLE_QUERY = "CREATE TABLE  " + TABLE_NAME
             + " ( " + ID + " INTEGER  PRIMARY KEY AUTOINCREMENT, "
@@ -55,6 +56,7 @@ public class Videos extends BaseDataModel {
             + VIDEO_ID + " VARCHAR(5) , "
             + NAME + " VARCHAR(250) , "
             + VIDEO + " TEXT , "
+            + CURRENT_POSITION + " INTEGER , "
             + TYPE + " VARCHAR(10) , "
             + PDF_BROCHURE + " TEXT , "
             + IMAGE_PATH + " TEXT , "
@@ -70,6 +72,7 @@ public class Videos extends BaseDataModel {
     private String status;
     private String pdfBrochure;
     private String imagePath;
+    private int currentPostion = 0;
 
     public ArrayList<Videos> videos;
 
@@ -169,7 +172,9 @@ public class Videos extends BaseDataModel {
         videos.name = obj.getName();
         videos.imagePath = obj.getImagepath();
         videos.video = obj.getVideo();
+        videos.videoID = obj.getId();
         videos.pdfBrochure = obj.getFilepath();
+        videos.type = obj.getType();
         return videos;
     }
 
@@ -191,6 +196,7 @@ public class Videos extends BaseDataModel {
         cv.put(STATUS, object.getStatus());
         cv.put(PDF_BROCHURE, object.getPdfBrochure());
         cv.put(IMAGE_PATH, object.getImagePath());
+        cv.put(CURRENT_POSITION, object.currentPostion);
 
         long result = sqld.insert(TABLE_NAME, null,cv);
         object.id = result;
@@ -220,6 +226,16 @@ public class Videos extends BaseDataModel {
         cv.put(STATUS, object.getStatus());
         cv.put(PDF_BROCHURE, object.getPdfBrochure());
         cv.put(IMAGE_PATH, object.getImagePath());
+        cv.put(CURRENT_POSITION, object.currentPostion);
+        sqld.update(TABLE_NAME, cv, VIDEO_ID + "='" + object.getVideoID() + "'", null);
+        sqld.close();
+    }
+
+    public static void updateCurrentPostion(DatabasesHelper db, Videos object) {
+        if( object == null) return;
+        SQLiteDatabase sqld = db.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CURRENT_POSITION, object.currentPostion);
         sqld.update(TABLE_NAME, cv, VIDEO_ID + "='" + object.getVideoID() + "'", null);
         sqld.close();
     }
@@ -246,6 +262,7 @@ public class Videos extends BaseDataModel {
             instance.setStatus(c.getString(c.getColumnIndex(STATUS)));
             instance.setPdfBrochure(c.getString(c.getColumnIndex(PDF_BROCHURE)));
             instance.setImagePath(c.getString(c.getColumnIndex(IMAGE_PATH)));
+            instance.currentPostion = c.getInt(c.getColumnIndex(CURRENT_POSITION));
 
         } else {
         }

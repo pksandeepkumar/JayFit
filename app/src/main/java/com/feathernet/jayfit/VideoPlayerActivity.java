@@ -1,5 +1,6 @@
 package com.feathernet.jayfit;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,11 +18,14 @@ public class VideoPlayerActivity extends BaseActivity {
 
     String VideoURL = "https://gcs-vimeo.akamaized.net/exp=1523394409~acl=%2A%2F914665015.mp4%2A~hmac=940d62e75ed1ef797787f7dd754debab1062685cc9b0a0480617ebb1895b3fdd/vimeo-prod-skyfire-std-us/01/317/10/251587663/914665015.mp4";
     VideoView videoview;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        mContext = this;
 
 
         Bundle bundle = getIntent().getExtras();
@@ -54,13 +58,22 @@ public class VideoPlayerActivity extends BaseActivity {
                     videoview.start();
                 }
             });
+
+
+
+
+
+
+            videoview.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                    Toast.makeText(mContext,"Something went wrong, Please try later", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            });
         } else {
             Toast.makeText(this,"Something went wrong, Please try later", Toast.LENGTH_LONG).show();
         }
-
-
-
-
 
 
     }

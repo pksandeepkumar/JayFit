@@ -96,7 +96,7 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
 
         final Videos video = mValues.get(position);
 
-        if(video.getType().equals(AppConst.TYPE_PAID)) {
+        if(video.getType() != null && video.getType().equals(AppConst.TYPE_PAID)) {
             holder.tvFree.setVisibility(View.INVISIBLE);
         }
 
@@ -108,11 +108,21 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
         holder.imVid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(video.getType().equals(AppConst.TYPE_FREE)) {
+
+//                Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                Bundle bundle = new Bundle();
+//                bundle.putString(AppConst.VIDEO_ID, video.getVideoID());
+//                bundle.putString(AppConst.VIDEO_URL, video.getVideo());
+//                intent.putExtras(bundle);
+//
+//                mContext.startActivity(intent);
+
+                if(video.getType() != null && video.getType().equals(AppConst.TYPE_FREE)) {
                     Intent intent = new Intent(mContext, VideoPlayerActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle bundle = new Bundle();
-                    bundle.putString(AppConst.VIDEO_ID, video.getCategoryID());
+                    bundle.putString(AppConst.VIDEO_ID, video.getVideoID());
                     bundle.putString(AppConst.VIDEO_URL, video.getVideo());
                     intent.putExtras(bundle);
 
@@ -127,7 +137,7 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
         holder.btnViewPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openPDF();
+                openPDF(video.getPdfBrochure());
             }
         });
 
@@ -141,13 +151,12 @@ public class SubVideoListAdapter extends RecyclerView.Adapter<SubVideoListAdapte
 
     }
 
-    public void openPDF() {
+    public void openPDF( String pdfUrl) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl));
+        mContext.startActivity(browserIntent);
+    }
 
-//        boolean test = false;
-//        if(!test) {
-//            SubVideoListActivity.chekout();
-//            return;
-//        }
+    public void openPDF() {
         File fileBrochure = new File(Environment.getExternalStorageDirectory() + File.separator + "demo.pdf");
         if (!fileBrochure.exists()) {
             CopyAssetsbrochure();

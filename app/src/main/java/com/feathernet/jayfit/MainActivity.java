@@ -204,14 +204,12 @@ public class MainActivity extends BaseActivity
         }
         helper.close();
 
-
         if(categories != null) {
             for( Category category: categories) {
                 VideoListItem videoListItem = new VideoListItem(mContext, category);
                 llVideoHolder.addView(videoListItem);
             }
         }
-
 
     }
 

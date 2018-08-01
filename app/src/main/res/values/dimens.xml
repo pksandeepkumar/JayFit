@@ -28,4 +28,7 @@
     <dimen name="slide_desc">16dp</dimen>
     <dimen name="desc_padding">40dp</dimen>
 
+    <dimen name="profile_image_width">130dp</dimen>
+    <dimen name="profile_image_height">130dp</dimen>
+
 </resources>
