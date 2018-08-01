@@ -8,15 +8,10 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.feathernet.jayfit.database.DatabasesHelper;
-import com.feathernet.jayfit.models.SliderData;
-import com.feathernet.jayfit.models.Videos;
-
-import java.util.ArrayList;
-
 public class VideoPlayerActivity extends BaseActivity {
 
     String VideoURL = "https://gcs-vimeo.akamaized.net/exp=1523394409~acl=%2A%2F914665015.mp4%2A~hmac=940d62e75ed1ef797787f7dd754debab1062685cc9b0a0480617ebb1895b3fdd/vimeo-prod-skyfire-std-us/01/317/10/251587663/914665015.mp4";
+    String videoUrl2 = "https://player.vimeo.com/external/280213231.sd.mp4?s=3099248659d3462c412d96b349f11b03775417d2&profile_id=164";
     VideoView videoview;
     Context mContext;
 
@@ -33,6 +28,7 @@ public class VideoPlayerActivity extends BaseActivity {
         String videoUrl = bundle.getString(AppConst.VIDEO_URL);
         if(videoUrl != null) {
             VideoURL = videoUrl;
+            VideoURL = videoUrl2;
 
             videoview = (VideoView) findViewById(R.id.VideoView);
             try {
