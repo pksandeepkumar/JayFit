@@ -28,7 +28,7 @@ public class VideoPlayerActivity extends BaseActivity {
         String videoUrl = bundle.getString(AppConst.VIDEO_URL);
         if(videoUrl != null) {
             VideoURL = videoUrl;
-            VideoURL = videoUrl2;
+//            VideoURL = videoUrl2;
 
             videoview = (VideoView) findViewById(R.id.VideoView);
             try {
@@ -58,8 +58,6 @@ public class VideoPlayerActivity extends BaseActivity {
 
 
 
-
-
             videoview.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
@@ -74,5 +72,17 @@ public class VideoPlayerActivity extends BaseActivity {
 
     }
 
+    public void showProgress() {
 
+    }
+
+    public void hideProgress() {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        Toast.makeText(this,"OnDestroy", Toast.LENGTH_LONG).show();
+    }
 }
