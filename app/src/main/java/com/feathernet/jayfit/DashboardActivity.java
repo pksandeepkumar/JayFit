@@ -1,26 +1,27 @@
 package com.feathernet.jayfit;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.feathernet.jayfit.adapters.SlideAdapter;
 import com.feathernet.jayfit.controlls.VideoListItem;
 import com.feathernet.jayfit.database.DatabasesHelper;
 import com.feathernet.jayfit.models.Category;
 import com.feathernet.jayfit.models.SubCategory;
 import com.feathernet.jayfit.models.Videos;
+import com.feathernet.jayfit.preferance.SavedPreferance;
 import com.feathernet.jayfit.rest.pojos.videosall.GetAllVideosPOJO;
 
 import java.util.ArrayList;
@@ -54,6 +55,21 @@ public class DashboardActivity extends BaseActivity {
         loadSliders();
         isWriteStoragePermissionGranted();
         loadAllVideos();
+        loadProfilePhoto();
+    }
+
+    private void initViews() {
+
+    }
+
+    private void loadProfilePhoto() {
+        ImageView imProfilePic = (ImageView) findViewById(R.id.imProfile);
+        if(SavedPreferance.getGoogleLogined(this)) {
+            String imageUrl = SavedPreferance.getString(this, SavedPreferance.PHOTO_URL);
+            if(imageUrl != null && imageUrl.length() > 50) {
+                Glide.with(mContext).load(imageUrl).apply(RequestOptions.circleCropTransform()).into(imProfilePic);
+            }
+        }
     }
 
     public void gotoProfile(View view) {

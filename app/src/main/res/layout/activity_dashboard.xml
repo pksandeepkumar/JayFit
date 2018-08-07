@@ -28,7 +28,7 @@
                 android:id="@+id/imProfile"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/avatar_light"
-                android:padding="3dp"
+                android:padding="8dp"
                 android:onClick="gotoProfile"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize" />

@@ -21,6 +21,18 @@ public class SavedPreferance {
 	public static final String PHOTO_URL = "PHOTO_URL";
 	public static final String GMAIL_ACCESS_TOCKEN = "GMAIL_ACCESS_TOCKEN";
 
+	public static final String ID = "ID";
+
+
+	public static void setInt(Context context, String key, int value) {
+		Editor edit = getPreferance(context).edit();
+		edit.putInt(key, value);
+		edit.commit();
+	}
+
+	public static int getInt(Context context, String key) {
+		return getPreferance(context).getInt(key, 0);
+	}
 
 
 	public static void setString(Context context, String key, String value) {

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.feathernet.jayfit.preferance.SavedPreferance;
 
 public class VideoPlayerActivity extends BaseActivity {
 
@@ -14,6 +17,7 @@ public class VideoPlayerActivity extends BaseActivity {
     String videoUrl2 = "https://player.vimeo.com/external/280213231.sd.mp4?s=3099248659d3462c412d96b349f11b03775417d2&profile_id=164";
     VideoView videoview;
     Context mContext;
+    String videoID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class VideoPlayerActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
 
         String videoUrl = bundle.getString(AppConst.VIDEO_URL);
+        videoID = bundle.getString(AppConst.VIDEO_ID);
         if(videoUrl != null) {
             VideoURL = videoUrl;
 //            VideoURL = videoUrl2;
@@ -51,7 +56,13 @@ public class VideoPlayerActivity extends BaseActivity {
                 // Close the progress bar and play the video
                 public void onPrepared(MediaPlayer mp) {
 
+
                     videoview.start();
+                    if(videoID != null) {
+                        int currentPostion = SavedPreferance.getInt(mContext, SavedPreferance.ID + videoID);
+                        videoview.seekTo(currentPostion *1000);
+                        Log.e("XXXXXXXX","SEEK TO.................................." + currentPostion);
+                    }
                 }
             });
 
@@ -77,12 +88,24 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     public void hideProgress() {
+        if(videoview != null && videoID !=null) {
+            int currentPositon = videoview.getCurrentPosition();
+            SavedPreferance.setInt(mContext, SavedPreferance.ID + videoID, currentPositon);
+            Log.e("XXXXXXXX","SAVING.................................." + currentPositon);
+        }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        Toast.makeText(this,"OnDestroy", Toast.LENGTH_LONG).show();
+
+
+
+        Toast.makeText(this,"OnDestroy", Toast.LENGTH_LONG).show();
     }
 }
