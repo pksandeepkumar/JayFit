@@ -5,11 +5,13 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.feathernet.jayfit.preferance.SavedPreferance;
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class VideoPlayerActivity extends BaseActivity {
 
@@ -18,6 +20,7 @@ public class VideoPlayerActivity extends BaseActivity {
     VideoView videoview;
     Context mContext;
     String videoID = null;
+    AVLoadingIndicatorView avlProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class VideoPlayerActivity extends BaseActivity {
         mContext = this;
 
 
+        avlProgress = (AVLoadingIndicatorView) findViewById(R.id.avlProgress);
         Bundle bundle = getIntent().getExtras();
 
         String videoUrl = bundle.getString(AppConst.VIDEO_URL);
@@ -56,13 +60,15 @@ public class VideoPlayerActivity extends BaseActivity {
                 // Close the progress bar and play the video
                 public void onPrepared(MediaPlayer mp) {
 
-
+                    avlProgress.setVisibility(View.INVISIBLE);
                     videoview.start();
                     if(videoID != null) {
                         int currentPostion = SavedPreferance.getInt(mContext, SavedPreferance.ID + videoID);
-                        videoview.seekTo(currentPostion *1000);
+                        videoview.seekTo(currentPostion);
                         Log.e("XXXXXXXX","SEEK TO.................................." + currentPostion);
                     }
+
+
                 }
             });
 
@@ -88,6 +94,13 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     public void hideProgress() {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
         if(videoview != null && videoID !=null) {
             int currentPositon = videoview.getCurrentPosition();
             SavedPreferance.setInt(mContext, SavedPreferance.ID + videoID, currentPositon);
@@ -96,16 +109,11 @@ public class VideoPlayerActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
 
 
-        Toast.makeText(this,"OnDestroy", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"OnDestroy", Toast.LENGTH_LONG).show();
     }
 }

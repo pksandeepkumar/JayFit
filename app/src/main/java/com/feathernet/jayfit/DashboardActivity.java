@@ -1,7 +1,9 @@
 package com.feathernet.jayfit;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.feathernet.jayfit.adapters.SlideAdapter;
 import com.feathernet.jayfit.controlls.VideoListItem;
 import com.feathernet.jayfit.database.DatabasesHelper;
+import com.feathernet.jayfit.dialog.ProgressDialog;
 import com.feathernet.jayfit.models.Category;
 import com.feathernet.jayfit.models.SubCategory;
 import com.feathernet.jayfit.models.Videos;
@@ -36,6 +39,7 @@ import retrofit2.Response;
 public class DashboardActivity extends BaseActivity {
 
     public static String TAG = "MainActivity";
+    public static final int REQ_CODE = 1234;
 
     int currentPage = 0;
     Timer timer;
@@ -45,6 +49,7 @@ public class DashboardActivity extends BaseActivity {
 
     Context mContext;
     LinearLayout llVideoHolder;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -56,6 +61,18 @@ public class DashboardActivity extends BaseActivity {
         isWriteStoragePermissionGranted();
         loadAllVideos();
         loadProfilePhoto();
+    }
+
+    private void showPogress() {
+        if(progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+        }
+        progressDialog.show();
+    }
+
+    private void hideProgress() {
+        if(progressDialog == null) return;
+        progressDialog.dismiss();
     }
 
     private void initViews() {
@@ -73,7 +90,19 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void gotoProfile(View view) {
-        startActivity(ProfileActivity.class);
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivityForResult(i, REQ_CODE);
+//        startActivity(ProfileActivity.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQ_CODE) {
+            if(resultCode == Activity.RESULT_OK){
+                loadProfilePhoto();
+            }
+        }
     }
 
     public void loadSliders() {
@@ -108,6 +137,7 @@ public class DashboardActivity extends BaseActivity {
     }
 
     public void loadAllVideos() {
+        showPogress();
         com.feathernet.jayfit.models.Category category = new com.feathernet.jayfit.models.Category();
         Call<GetAllVideosPOJO> call = category.getAllVideos();
         call.enqueue(new Callback<GetAllVideosPOJO>() {
@@ -118,9 +148,11 @@ public class DashboardActivity extends BaseActivity {
                 Category.insertFromPOJO(dbHelper, response.body());
                 dbHelper.close();
                 populateVideos();
+                hideProgress();
             }
             @Override
             public void onFailure(Call<GetAllVideosPOJO> call, Throwable t) {
+                hideProgress();
             }
 
         });

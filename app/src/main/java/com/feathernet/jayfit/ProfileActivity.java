@@ -1,5 +1,6 @@
 package com.feathernet.jayfit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -35,6 +36,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     LinearLayout llProfileContent;
     TextView tvName;
     TextView tvEmail;
+    boolean loginedNow = false;
 
 
 
@@ -77,10 +79,21 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         tvEmail = (TextView) this.findViewById(R.id.tvEmail);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(loginedNow) {
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK,returnIntent);
+        }
+        finish();
+
+    }
+
 
 
     private void loadProfileInfo() {
         if(SavedPreferance.getGoogleLogined(this)) {
+            llProfileContent.setVisibility(View.VISIBLE);
             llSignIn.removeAllViews();
             String imageUrl = SavedPreferance.getString(this, SavedPreferance.PHOTO_URL);
             if(imageUrl != null && imageUrl.length() > 50) {
@@ -92,7 +105,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             tvEmail.setText(SavedPreferance.getString(mContext, SavedPreferance.EMAIL));
 
         } else {
-            llProfileContent.removeAllViews();
+            llProfileContent.setVisibility(View.INVISIBLE);
 
         }
     }
@@ -139,6 +152,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        loginedNow = true;
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
